@@ -1,99 +1,65 @@
 import React, { useState, useEffect } from "react";
-import { getCategories, list } from "./apiCore";
+import Layout from "./Layout";
+import { getProducts } from "./apiCore";
 import Card from "./Card";
+import Search from "./Search";
 
-const Search = () => {
-    const [data, setData] = useState({
-        categories: [],
-        category: "",
-        search: "",
-        results: [],
-        searched: false
-    });
+const Home = () => {
+    const [productsBySell, setProductsBySell] = useState([]);
+    const [productsByArrival, setProductsByArrival] = useState([]);
+    const [error, setError] = useState(false);
 
-    const { categories, category, search, results, searched } = data;
-
-    const loadCategories = () => {
-        getCategories().then(data => {
+    const loadProductsBySell = () => {
+        getProducts("sold").then(data => {
             if (data.error) {
-                console.log(data.error);
+                setError(data.error);
             } else {
-                setData({ ...data, categories: data });
+                setProductsBySell(data);
+            }
+        });
+    };
+
+    const loadProductsByArrival = () => {
+        getProducts("createdAt").then(data => {
+            if (data.error) {
+                setError(data.error);
+            } else {
+                setProductsByArrival(data);
             }
         });
     };
 
     useEffect(() => {
-        loadCategories();
+        loadProductsByArrival();
+        loadProductsBySell();
     }, []);
 
-    const searchData = () => {
-        // console.log(search, category);
-        if (search) {
-            list({ search: search || undefined, category: category }).then(
-                response => {
-                    if (response.error) {
-                        console.log(response.error);
-                    } else {
-                        setData({ ...data, results: response, searched: true });
-                    }
-                }
-            );
-        }
-    };
-
-    const searchSubmit = e => {
-        e.preventDefault();
-        searchData();
-    };
-
-    const handleChange = name => event => {
-        setData({ ...data, [name]: event.target.value, searched: false });
-    };
-
-    const searchForm = () => (
-        <form onSubmit={searchSubmit}>
-            <span className="input-group-text">
-                <div className="input-group input-group-lg">
-                    <div className="input-group-prepend">
-                        <select
-                            className="btn mr-2"
-                            onChange={handleChange("category")}
-                        >
-                            <option value="All">Pick Category</option>
-                            {categories.map((c, i) => (
-                                <option key={i} value={c._id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <input
-                        type="search"
-                        className="form-control"
-                        onChange={handleChange("search")}
-                        placeholder="Search by name"
-                    />
-                </div>
-                <div
-                    className="btn input-group-append"
-                    style={{ border: "none" }}
-                >
-                    <button className="input-group-text">Search</button>
-                </div>
-            </span>
-        </form>
-    );
-
     return (
-        <div className="row">
-            <div className="container mb-3">
-                {searchForm()}
-                {JSON.stringify(results)}
+        <Layout
+            title="Home Page"
+            description="Node React E-commerce App"
+            className="container-fluid"
+        >
+            <Search />
+            <h2 className="mb-4">New Arrivals</h2>
+            <div className="row">
+                {productsByArrival.map((product, i) => (
+                    <div key={i} className="col-4 mb-3">
+                        <Card product={product} />
+                    </div>
+                ))}
             </div>
-        </div>
+
+            <h2 className="mb-4">Best Sellers</h2>
+            <div className="row">
+                {productsBySell.map((product, i) => (
+                    <div key={i} className="col-4 mb-3">
+                        <Card product={product} />
+                    </div>
+                ))}
+            </div>
+        </Layout>
     );
 };
 
-export default Search;
+export default Home;
