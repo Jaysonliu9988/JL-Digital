@@ -96,10 +96,15 @@ const Checkout = ({ products }) => {
 
                         createOrder(userId, token, createOrderData)
                             .then(response => {
-                                // emptyCart(() => {
-                                //     console.log("payment success and empty cart");
-                                //     setData({ loading: false, success: response.success });
-                                // });
+                                emptyCart(() => {
+                                    console.log(
+                                        "payment success and empty cart"
+                                    );
+                                    setData({
+                                        loading: false,
+                                        success: true
+                                    });
+                                });
                             })
                             .catch(error => {
                                 console.log(error);
