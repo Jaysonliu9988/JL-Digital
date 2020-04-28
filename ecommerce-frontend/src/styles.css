@@ -8,15 +8,18 @@
      border-radius: 0px;
  }
  
+ .nav {
+     background-color: #20bdff;
+ }
  /* cart badge */
  
  .cart-badge,
  .cart-badge:hover {
      border-radius: 50%;
-     padding: 2px;
+     padding: 4px;
      font-size: 12px;
      font-style: italic;
-     background: #000;
+     background: grey;
  }
  /**
   * single product page - product name
@@ -69,12 +72,16 @@
  /**
   * jumbotron animation
   */
+ h2 {
+     font-size: 40px;
+     /* font-weight: bold; */
+     font-family: 'Anton', sans-serif;
+ }
  
  .jumbotron {
-     width: 30wh;
-     height: 30vh;
+     height: 180px;
      color: #fff;
-     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+     background: linear-gradient(-45deg, #5433ff, #20bdff, #23a6d5, #23d5ab);
      background-size: 400% 400%;
      -webkit-animation: Gradient 15s ease infinite;
      -moz-animation: Gradient 15s ease infinite;
