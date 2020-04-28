@@ -8,6 +8,16 @@
      border-radius: 0px;
  }
  
+ /* cart badge */
+ 
+ .cart-badge,
+ .cart-badge:hover {
+     border-radius: 50%;
+     padding: 2px;
+     font-size: 12px;
+     font-style: italic;
+     background: #000;
+ }
  /**
   * single product page - product name
   */
