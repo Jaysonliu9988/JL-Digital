@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { listOrders } from "./apiAdmin";
+import { listOrders, getStatusValues } from "./apiAdmin";
 import moment from "moment";
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
+    const [statusValues, setStatusValues] = useState([]);
 
     const { user, token } = isAuthenticated();
 
@@ -20,8 +21,19 @@ const Orders = () => {
         });
     };
 
+    const loadStatusValues = () => {
+        getStatusValues(user._id, token).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                setStatusValues(data);
+            }
+        });
+    };
+
     useEffect(() => {
         loadOrders();
+        loadStatusValues();
     }, []);
 
     const showOrdersLength = () => {
@@ -47,6 +59,27 @@ const Orders = () => {
                 className="form-control"
                 readOnly
             />
+        </div>
+    );
+
+    const handleStatusChange = (e, orderId) => {
+        console.log("update order status");
+    };
+
+    const showStatus = o => (
+        <div className="form-group">
+            <h3 className="mark mb-4">Status: {o.status}</h3>
+            <select
+                className="form-control"
+                onChange={e => handleStatusChange(e, o._id)}
+            >
+                <option>Update Status</option>
+                {statusValues.map((status, index) => (
+                    <option key={index} value={status}>
+                        {status}
+                    </option>
+                ))}
+            </select>
         </div>
     );
 
@@ -76,7 +109,7 @@ const Orders = () => {
 
                                 <ul className="list-group mb-2">
                                     <li className="list-group-item">
-                                        {o.status}
+                                        {showStatus(o)}
                                     </li>
                                     <li className="list-group-item">
                                         Transaction ID: {o.transaction_id}
