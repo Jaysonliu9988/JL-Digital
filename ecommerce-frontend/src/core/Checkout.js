@@ -59,6 +59,8 @@ const Checkout = ({ products }) => {
         );
     };
 
+    let deliveryAddress = data.address;
+
     const buy = () => {
         setData({ loading: true });
         // send the nonce to your server
@@ -91,7 +93,7 @@ const Checkout = ({ products }) => {
                             products: products,
                             transaction_id: response.transaction.id,
                             amount: response.transaction.amount,
-                            address: data.address
+                            address: deliveryAddress
                         };
 
                         createOrder(userId, token, createOrderData)
