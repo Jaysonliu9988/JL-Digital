@@ -5,7 +5,7 @@
 * Deployed fully functioning E-commerce app to production by using Digital Ocean cloud servers, Brain tree for handling payments. And use a custom domain, CDN and free SSL to secure the app.
 
 ## Signin part
-![gify1](ecommerce-frontend/images/signin.gif)
+![gify1](ecommerce-frontend/images/signIn.gif)
 
 ## Signup part
 ![gify1](screenShot/signin.gif)
